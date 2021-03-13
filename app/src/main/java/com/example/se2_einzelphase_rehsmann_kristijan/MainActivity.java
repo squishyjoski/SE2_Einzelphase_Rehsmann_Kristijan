@@ -8,6 +8,12 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.net.Socket;
+
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -22,11 +28,47 @@ public class MainActivity extends AppCompatActivity {
                 EditText EingabeMatrikelnummer = (EditText) findViewById(R.id.EingabeMatrikelnummerEditTextNumber);
                 TextView Antwort = (TextView) findViewById(R.id.AntwortTextView);
 
-                int Matrikelnummer = Integer.parseInt(EingabeMatrikelnummer.getText().toString());
-                int result = Matrikelnummer + 1;
-                Antwort.setText(result + "");
+                String eingabe = EingabeMatrikelnummer.toString();
+                String ausgabe = "Testausgabe";
+
+                /*int Matrikelnummer = Integer.parseInt(EingabeMatrikelnummer.getText().toString());
+                int result = Matrikelnummer + 1;*/
+                Antwort.setText(ausgabe);
 
             }
+
+            public String sort(String eingabe){
+                String ausgabe = (String)eingabe;
+
+
+                return ausgabe;
+            }
         });
+
     }
+
+
+    public static void client(String argv[]) throws Exception{
+        String sentence;
+        String modifiedSentence;
+
+        BufferedReader inFromuser = new BufferedReader(new InputStreamReader(System.in));
+
+        Socket clientSocket = new Socket("se2-isys.aau.at", 53212);
+
+        DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
+
+        BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+        sentence = inFromuser.readLine();
+
+        outToServer.writeBytes(sentence + '\n');
+
+        modifiedSentence = inFromServer.readLine();
+
+        clientSocket.close();
+
+    }
+
+
 }
