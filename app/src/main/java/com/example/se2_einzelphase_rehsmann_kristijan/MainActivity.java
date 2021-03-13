@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.Arrays;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -21,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Button für Serverberechnung
+
         Button abschickenButton = (Button) findViewById(R.id.abschickenButton);
         abschickenButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -28,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
                 EditText EingabeMatrikelnummer = (EditText) findViewById(R.id.EingabeMatrikelnummerEditTextNumber);
                 TextView Antwort = (TextView) findViewById(R.id.AntwortTextView);
 
-                String eingabe = EingabeMatrikelnummer.toString();
-                String ausgabe = "Testausgabe";
+                String eingabe = EingabeMatrikelnummer.getText().toString();
+                String ausgabe = "Testausgabe server";
 
                 /*int Matrikelnummer = Integer.parseInt(EingabeMatrikelnummer.getText().toString());
                 int result = Matrikelnummer + 1;*/
@@ -45,7 +48,51 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        // Button für lokale Berechnung inklusive Implementierung
+
+        Button berechnenButton = (Button) findViewById(R.id.berechnenButton);
+        berechnenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                EditText EingabeMatrikelnummer = (EditText) findViewById(R.id.EingabeMatrikelnummerEditTextNumber);
+                TextView Antwort = (TextView) findViewById(R.id.AntwortTextView);
+
+                String eingabe = EingabeMatrikelnummer.getText().toString();
+
+
+                //Implementierung der Aufgabe 0
+
+                char [] StringToArray = eingabe.toCharArray();
+                Arrays.sort(StringToArray);
+
+                String odd="";
+                String even ="";
+
+
+                for (int i=0; i<StringToArray.length-1;i++ ){
+                    if(StringToArray[i]%2==0){
+                        even=even+StringToArray[i];
+                    }
+                    else{
+                        odd=odd+StringToArray[i];
+                    }
+
+
+                };
+                String ausgabe = even+odd;
+
+                Antwort.setText(ausgabe);
+
+            }
+        });
+
     }
+
+
+
+    //Implementierung von client
 
 
     public static void client(String argv[]) throws Exception{
