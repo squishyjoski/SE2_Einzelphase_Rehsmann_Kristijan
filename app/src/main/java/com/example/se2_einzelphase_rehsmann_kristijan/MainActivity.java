@@ -8,10 +8,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.net.Socket;
 import java.util.Arrays;
 
 
@@ -22,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Button für Serverberechnung
+        // Aufgabe 1: Button für Serverberechnung
 
         Button abschickenButton = (Button) findViewById(R.id.abschickenButton);
         abschickenButton.setOnClickListener(new View.OnClickListener() {
@@ -32,24 +28,20 @@ public class MainActivity extends AppCompatActivity {
                 TextView Antwort = (TextView) findViewById(R.id.AntwortTextView);
 
                 String eingabe = EingabeMatrikelnummer.getText().toString();
-                String ausgabe = "Testausgabe server";
 
-                /*int Matrikelnummer = Integer.parseInt(EingabeMatrikelnummer.getText().toString());
-                int result = Matrikelnummer + 1;*/
-                Antwort.setText(ausgabe);
-
-            }
-
-            public String sort(String eingabe){
-                String ausgabe = (String)eingabe;
-
-
-                return ausgabe;
+                Client client = new Client(eingabe);
+                client.start();
+                try {
+                    client.join();
+                }
+                catch (Exception e){
+                }
+                Antwort.setText(client.ausgabe);
             }
         });
 
 
-        // Button für lokale Berechnung inklusive Implementierung
+        // Aufgabe 2: Button für lokale Berechnung, ruft Methode sort auf, die die Berechnung durchführt
 
         Button berechnenButton = (Button) findViewById(R.id.berechnenButton);
         berechnenButton.setOnClickListener(new View.OnClickListener() {
@@ -60,31 +52,7 @@ public class MainActivity extends AppCompatActivity {
                 TextView Antwort = (TextView) findViewById(R.id.AntwortTextView);
 
                 String eingabe = EingabeMatrikelnummer.getText().toString();
-
-
-                //Implementierung der Aufgabe 0
-
-                char [] StringToArray = eingabe.toCharArray();
-                Arrays.sort(StringToArray);
-
-                String odd="";
-                String even ="";
-
-
-                for (int i=0; i<StringToArray.length-1;i++ ){
-                    if(StringToArray[i]%2==0){
-                        even=even+StringToArray[i];
-                    }
-                    else{
-                        odd=odd+StringToArray[i];
-                    }
-
-
-                };
-                String ausgabe = even+odd;
-
-                Antwort.setText(ausgabe);
-
+                Antwort.setText(sort(eingabe));
             }
         });
 
@@ -92,30 +60,35 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    //Implementierung von client
 
 
-    public static void client(String argv[]) throws Exception{
-        String sentence;
-        String modifiedSentence;
+    //Implementierung der Berechnung von Aufgabe 2.0 -> sortiert erst die geraden, dann alle ungeraden Ziffern aufsteigend
 
-        BufferedReader inFromuser = new BufferedReader(new InputStreamReader(System.in));
+    public String sort (String eingabe){
 
-        Socket clientSocket = new Socket("se2-isys.aau.at", 53212);
 
-        DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
 
-        BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        char [] StringToArray = eingabe.toCharArray();
+        Arrays.sort(StringToArray);
 
-        sentence = inFromuser.readLine();
+        String odd="";
+        String even ="";
 
-        outToServer.writeBytes(sentence + '\n');
 
-        modifiedSentence = inFromServer.readLine();
+        for (int i=0; i<StringToArray.length-1;i++ ){
+            if(StringToArray[i]%2==0){
+                even=even+StringToArray[i];
+            }
+            else{
+                odd=odd+StringToArray[i];
+            }
 
-        clientSocket.close();
+
+        };
+        String ausgabe = even+odd;
+
+        return ausgabe;
 
     }
-
 
 }
