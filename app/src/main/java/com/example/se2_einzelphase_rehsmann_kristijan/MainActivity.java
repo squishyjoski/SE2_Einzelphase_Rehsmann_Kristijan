@@ -1,3 +1,5 @@
+//Kristijan Rehsmann, 1060157
+
 package com.example.se2_einzelphase_rehsmann_kristijan;
 
 import android.os.Bundle;
@@ -75,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         String even ="";
 
 
-        for (int i=0; i<StringToArray.length-1;i++ ){
+        for (int i=0; i<StringToArray.length;i++ ){
             if(StringToArray[i]%2==0){
                 even=even+StringToArray[i];
             }

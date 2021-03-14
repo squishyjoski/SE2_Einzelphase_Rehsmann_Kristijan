@@ -1,3 +1,6 @@
+//Kristijan Rehsmann, 1060157
+
+
 package com.example.se2_einzelphase_rehsmann_kristijan;
 
 import java.io.BufferedReader;
@@ -15,6 +18,8 @@ public class Client extends Thread {
         this.ausgabe = "";
     }
 
+
+    // Methode für die Kommunikation mit Server - wurde aus den Angaben aus dem Tutorium übernommen und adaptiert
     @Override
     public void run() {
             String sentence;
